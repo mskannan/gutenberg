@@ -3,11 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Book Collection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
+        /* Fullscreen overlay */
+        #loader-wrapper {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: white; /* Plain background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
         body {
             background: #f8f9fa;
         }
@@ -66,18 +78,22 @@
         }
     </style>
 </head>
-<body>
-    
+<body> 
+        <!-- Loader Overlay -->
+        <div id="loader-wrapper">
+            <img src="https://i.gifer.com/4V0b.gif" alt="Loading..." width="100">
+        </div>
+
         <div class="hero">
             <a href="/">
                 <span>&larr;</span>
                 <span class="ms-2">{{capitalized_generename}}</span>
             </a>
         </div> 
-    
+     
     <div class="container py-4">
         <input type="text" class="search-bar" placeholder="Search">
-        <div class="row g-3">
+        <div class="row g-3" id="scrollload">
             {% for book in bookdata %}
                 {% if book.img %}
                 <div class="col-md-6 col-lg-2">
@@ -93,16 +109,17 @@
                         </p>
                     </div>
                 </div>
-                {% endif %}
+                
+            {% endif %}
             {% empty %} 
             
              
             <div class="container error-container"> 
                 <div class="error-message">Books Not Available</div>
-                <p>Sorry, Please check with another category.</p>
+                <p>Sorry, Please check with another category/Search.</p>
                 <a href="/" class="btn btn-primary">Go to Homepage</a>
             </div>
-            {% endfor %} 
+            {% endfor %}  
             <!-- Add more books as needed -->
         </div>
     </div>
@@ -110,24 +127,59 @@
 
 <script>
     $(document).ready(function () {
+        // Simulating page load delay (remove this in real use)
+        setTimeout(function () {
+            $("#loader-wrapper").fadeOut("slow", function () {
+                $("#content").fadeIn();
+            });
+        }, 2000); // 2-second delay for demonstration
+    });
+</script>
+<script>
+    $(document).ready(function () {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 10) {
-                console.log('Api Start')
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 10) {  
                 // AJAX Call when user reaches the bottom
-                // $.ajax({
-                //     url: "/your-api-endpoint/",  // Change this to your API URL
-                //     method: "GET",
-                //     dataType: "json",
-                //     beforeSend: function () {
-                //         $("#data-container").append("<p>Loading more data...</p>");
-                //     },
-                //     success: function (response) {
-                //         $("#data-container").append("<p>New Data: " + response.message + "</p>");
-                //     },
-                //     error: function () {
-                //         $("#data-container").append("<p>Error loading data.</p>");
-                //     }
-                // });
+                $.ajax({
+                    url: "http://127.0.0.1:8000/fetchbooksscroll/",  // Change this to your API URL
+                    method: "GET",
+                    "timeout": 0,
+                    dataType: "json",
+                    beforeSend: function () {
+                        //on before send
+                        $("#loader-wrapper").show()
+                    },
+                    success: function (response) {
+                        bookdata = response['bookdata']
+                        for (vals of bookdata){
+                            try{                                
+                                authorname = vals['authors'][0]
+                                authorval = authorname['name']
+                            }catch(err) {
+                                authorval = ''
+                            }
+                            if(vals['img']){
+                                $('#scrollload').append(`<div class="col-md-6 col-lg-2">
+                                                        <div class="book-card"> 
+                                                            <img src="${vals['img']}" alt="Book"> 
+                                                            <p class="mt-2 fw-bold text-paragraph" data-bs-toggle="tooltip" data-bs-placement="right" title="${vals['fulltitle']}">${vals['title']}</p>
+                                                            <p class="text-muted">
+                                                               ${authorval}
+                                                            </p>
+                                                        </div>
+                                                    </div>`)
+                                }
+
+                        }
+
+                        
+                        $("#loader-wrapper").hide()
+                    },
+                    error: function () {
+                        console.log('Stopped from fetching')
+                        $("#loader-wrapper").hide()
+                    }
+                });
             }
         });
     });

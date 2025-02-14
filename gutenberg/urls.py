@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index, name='index'),
     path('category/<str:generename>',views.category,name="category"),
+    path('fetchbooksscroll/',views.fetchbooksscroll,name="fetchapi"),
 ]
