@@ -29,18 +29,33 @@ def fetchapi(request,url):
         data = response.json()
         return data 
 
+def getpreferedlink(imgval):
+    preferred_formats = ['text/html', 'text/html; charset=utf-8', 'text/plain','text/plain; charset=us-ascii','application/rdf+xml']    
+    for fmt in preferred_formats:
+        value = imgval.get(fmt)
+        if value:
+            return value  # Return the first available value
+    
+    return None  # If none of the preferred formats exist
+
+
+
 def formatapidata(apidata):    
     apidataresult = apidata['results']
     cachelist = []
     for data in apidataresult:
         imgval = data['formats']
         fulltitle = data['title']
+        srclink = getpreferedlink(imgval)
+    
+
 
         cachelist.append({
             'title': ' '.join(fulltitle.split(" ")[:5]),
             'fulltitle':fulltitle,
             'authors': data['authors'],
-            "img": imgval.get('image/jpeg')
+            "img": imgval.get('image/jpeg'),
+            "srclink":srclink
         })
 
     context = {'bookdata': cachelist}
