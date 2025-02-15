@@ -45,8 +45,8 @@ body {
     height: 320px;
 }
 .book-card img {
-    width: 180px;
-    height: 180px;
+    width: 11.25rem;
+    height: 11.25rem;
     border-radius: 5px;
 }
 .book-card:hover {
@@ -60,7 +60,8 @@ body {
     border: 1px solid #ddd;
 }
 .text-paragraph {
-    min-height: 50px; /* Set the maximum height */ 
+    max-height: 50px; /* Set the maximum height */ 
+    width: 90%;
 } 
 .error-container { 
     display: flex; /* Flexbox for centering */
@@ -79,4 +80,10 @@ body {
 a {
     text-decoration: none;
     color: inherit;
+}
+.cardcontent{
+    
+    display: flex;
+    justify-content: center;  /* Center-align the images */
+    text-align: center; 
 }
