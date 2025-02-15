@@ -6,6 +6,8 @@
     <title>Gutenberg Project</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             background: #f8f9fa;
@@ -20,23 +22,31 @@
             color: #6c5ce7;
             font-weight: bold;
         }
-        .category-card {
+        .card-custom {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px;
-            border-radius: 10px;
             background: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            border: none;
+            width: 100%;
+            margin-bottom: 15px;
         }
-        .category-card:hover {
-            transform: translateY(-3px);
+        .icon-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .icon {
-            font-size: 24px;
-            color: #6c5ce7;
-        } 
+        .icon-text i {
+            color: #6366f1; /* Purple color */
+            font-size: 20px;
+        }
+        .arrow {
+            color: #6366f1;
+            font-size: 18px;
+        }
         a {
             text-decoration: none;
             color: inherit;
@@ -49,72 +59,84 @@
         <p>A social cataloging website that allows you to freely search its database of books, annotations, and reviews.</p>
     </div>
 
-    <div class="container py-4">
-        <div class="row g-3">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="row w-75">
+            <!-- Left Column -->
             <div class="col-md-6">
                 <a href="/category/fiction">
-                    <div class="category-card">
-                        <span class="icon">🔬</span>
-                        <span>FICTION</span>
-                        <span class="icon">➡️</span>
+                    <div class="card-custom">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-flask"></i>
+                            <span class="fw-bold">FICTION</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right arrow"></i>
+                    </div>
+                </a>
+
+                <a href="/category/drama">
+                    <div class="card-custom">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-theater-masks"></i>
+                            <span class="fw-bold">DRAMA</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right arrow"></i>
+                    </div>
+                </a>
+
+                <a href="/category/humour">
+                    <div class="card-custom">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-face-grin"></i>
+                            <span class="fw-bold">HUMOUR</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right arrow"></i>
+                    </div>
+                </a>
+                <a href="/category/politics">
+                    <div class="card-custom">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-person-chalkboard"></i>
+                            <span class="fw-bold">POLITICS</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right arrow"></i>
                     </div>
                 </a>
             </div>
+
+            <!-- Right Column -->
             <div class="col-md-6">
-                <a href="/category/philosophy"> 
-                    <div class="category-card">
-                        <span class="icon">☯️</span>
-                        <span>PHILOSOPHY</span>
-                        <span class="icon">➡️</span>
+                <a href="/category/philosophy">
+                    <div class="card-custom">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-yin-yang"></i>
+                            <span class="fw-bold">PHILOSOPHY</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right arrow"></i>
                     </div>
                 </a>
-            </div>
-            <div class="col-md-6">
-                <a href="/category/drama"> 
-                    <div class="category-card">
-                        <span class="icon">🎭</span>
-                        <span>DRAMA</span>
-                        <span class="icon">➡️</span>
+
+                <a href="/category/history">
+                    <div class="card-custom">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-landmark"></i>
+                            <span class="fw-bold">HISTORY</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right arrow"></i>
                     </div>
                 </a>
-            </div>
-            <div class="col-md-6">
-                <a href="/category/history"> 
-                    <div class="category-card">
-                        <span class="icon">📜</span>
-                        <span>HISTORY</span>
-                        <span class="icon">➡️</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="/category/humour"> 
-                    <div class="category-card">
-                        <span class="icon">😆</span>
-                        <span>HUMOUR</span>
-                        <span class="icon">➡️</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="/category/adventure"> 
-                    <div class="category-card">
-                        <span class="icon">🗺️</span>
-                        <span>ADVENTURE</span>
-                        <span class="icon">➡️</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="/category/politics"> 
-                    <div class="category-card">
-                        <span class="icon">🏛️</span>
-                        <span>POLITICS</span>
-                        <span class="icon">➡️</span>
+                <a href="/category/adventure">
+                    <div class="card-custom">
+                        <div class="icon-text">
+                            <i class="fa-solid fa-person-hiking"></i>
+                            <span class="fw-bold">ADVENTURE</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right arrow"></i>
                     </div>
                 </a>
             </div>
         </div>
     </div>
+
+ 
 </body>
 </html>
