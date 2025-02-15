@@ -8,8 +8,8 @@ It includes a simple Django structure with models, views, templates, and static 
 
 Project Structure
 -----------------
-/my_project
-│── my_app/                  # Django app
+/gutenberg
+│── books/                   # Django app
 │   ├── migrations/          # Database migrations
 │   ├── static/              # Static files (CSS, JS, Images)
 │   ├── templates/           # HTML templates
@@ -27,7 +27,7 @@ Project Structure
 Installation & Setup
 --------------------
 1. Clone the Repository:
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/mskannan/gutenberg.git
    cd your-repo
 
 2. Create a Virtual Environment:
@@ -37,15 +37,8 @@ Installation & Setup
 
 3. Install Dependencies:
    pip install -r requirements.txt
-
-4. Run Migrations:
-   python manage.py migrate
-
-5. Create a Superuser (For Admin Panel):
-   python manage.py createsuperuser
-   Follow the instructions to set up an admin account.
-
-6. Run the Development Server:
+ 
+4. Run the Development Server:
    python manage.py runserver
    Now, open http://127.0.0.1:8000/ in your browser.
 
