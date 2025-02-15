@@ -62,11 +62,21 @@ def formatapidata(apidata):
 
     return context
 
+def fetchbooksearch(request):
+    if request.method == 'POST':
+        form = request.POST 
+        searchval = form.get('searchval')
+        url = f"http://skunkworks.ignitesol.com:8000/books/?search={searchval}"
+        apidata = fetchapi(request,url)
+        apicontext = formatapidata(apidata)
+
+        return JsonResponse(apicontext)
+
+
 
 def fetchbooksscroll(request):  
     cache_nextlink = request.session.get('nextlink') 
-    overallvallist = request.session.get('overalllink')
-    print(overallvallist)
+    overallvallist = request.session.get('overalllink') 
     if cache_nextlink in overallvallist:
         return JsonResponse(
             {"error": "Invalid request method", "message": "Only GET requests are allowed"},

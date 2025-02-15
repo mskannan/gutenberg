@@ -23,4 +23,5 @@ urlpatterns = [
     path('',views.index, name='index'),
     path('category/<str:generename>',views.category,name="category"),
     path('fetchbooksscroll/',views.fetchbooksscroll,name="fetchapi"),
+    path('fetchbooksearch/',views.fetchbooksearch,name="fetchapisearch")
 ]

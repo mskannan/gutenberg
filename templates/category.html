@@ -83,7 +83,7 @@
 <body> 
         <!-- Loader Overlay -->
         <div id="loader-wrapper">
-            <img src="https://i.gifer.com/4V0b.gif" alt="Loading..." width="100">
+            <img src="https://media.tenor.com/mTz7WCbH92oAAAAi/book-transparent.gif" alt="Loading..." width="100">
         </div>
 
         <div class="hero">
@@ -94,7 +94,7 @@
         </div> 
      
     <div class="container py-4">
-        <input type="text" class="search-bar" placeholder="Search">
+        <input type="text" class="search-bar" id="search-bar" placeholder="Search" onkeyup="searchfetch()">
         <div class="row g-3" id="scrollload">
             {% for book in bookdata %}
                 {% if book.img %}
@@ -138,12 +138,78 @@
     });
 </script>
 <script>
+    function getCSRFToken() {
+        return document.cookie.split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+    }
+
+    function searchfetch(){
+        searchval = $('#search-bar').val()  
+        $.ajax({
+            url: "http://127.0.0.1:8000/fetchbooksearch/",  // Change this to your API URL
+            method: "POST", 
+            headers: { "X-CSRFToken": getCSRFToken() },           
+            data: { "searchval":  searchval },
+            "timeout": 0,
+            dataType: "json",
+            beforeSend: function () { 
+                $("#loader-wrapper").show()
+            },
+            success: function (response) {
+                bookdata = response['bookdata']
+                updatefetched_data(bookdata,'search')
+                $("#loader-wrapper").hide()
+            },
+            error: function () {
+                console.log('Stopped from fetching')
+                $("#loader-wrapper").hide()
+            }
+        });
+
+    }
+
     function openpopup(url){
         if(url=="None"){
             swal("No viewable version available") 
             return false
         }else{
             window.open(url, '_blank');
+        }
+    }
+
+    function updatefetched_data(bookdata,categorytype=''){    
+        if(categorytype=='search'){
+            console.log('inside the if statement')
+            $('#scrollload').html('')
+            if(bookdata.length == 0){
+                $('#scrollload').html(`
+                    <div class="container error-container"> 
+                        <div class="error-message">Books Not Available</div>
+                        <p>Sorry, Please check with another category/Search.</p>
+                        <a href="/" class="btn btn-primary">Go to Homepage</a>
+                    </div>`)
+            }
+        }  
+
+        for (vals of bookdata){
+            try{                                
+                authorname = vals['authors'][0]
+                authorval = authorname['name']
+            }catch(err) {
+                authorval = ''
+            }
+            if(vals['img']){
+                $('#scrollload').append(`<div class="col-md-6 col-lg-2"  onclick="openpopup('${vals['srclink']}')">
+                                        <div class="book-card"> 
+                                            <img src="${vals['img']}" alt="Book"> 
+                                            <p class="mt-2 fw-bold text-paragraph" data-bs-toggle="tooltip" data-bs-placement="right" title="${vals['fulltitle']}">${vals['title']}</p>
+                                            <p class="text-muted">
+                                                ${authorval}
+                                            </p>
+                                        </div>
+                                    </div>`)
+            }
         }
     }
 
@@ -162,28 +228,7 @@
                     },
                     success: function (response) {
                         bookdata = response['bookdata']
-                        for (vals of bookdata){
-                            try{                                
-                                authorname = vals['authors'][0]
-                                authorval = authorname['name']
-                            }catch(err) {
-                                authorval = ''
-                            }
-                            if(vals['img']){
-                                $('#scrollload').append(`<div class="col-md-6 col-lg-2">
-                                                        <div class="book-card"> 
-                                                            <img src="${vals['img']}" alt="Book"> 
-                                                            <p class="mt-2 fw-bold text-paragraph" data-bs-toggle="tooltip" data-bs-placement="right" title="${vals['fulltitle']}">${vals['title']}</p>
-                                                            <p class="text-muted">
-                                                               ${authorval}
-                                                            </p>
-                                                        </div>
-                                                    </div>`)
-                                }
-
-                        }
-
-                        
+                        updatefetched_data(bookdata)
                         $("#loader-wrapper").hide()
                     },
                     error: function () {
